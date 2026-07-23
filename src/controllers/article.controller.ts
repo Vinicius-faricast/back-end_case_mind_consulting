@@ -4,10 +4,11 @@ import * as commentService from '../services/comment.service';
 import { authMiddleware } from '../utils/middleware';
 import { User } from '../interfaces';
 
-export const authenticate = [authMiddleware];
+export const authenticate = authMiddleware;
 
 export async function createArticle(req: any, res: Response, next: NextFunction) {
   try {
+    // Espera multipart; multer popula req.file
     const { title, content, published } = req.body;
     const user = req.user as User;
 
@@ -100,7 +101,7 @@ export async function getArticle(req: Request, res: Response, next: NextFunction
       return res.status(404).json({ message: 'Artigo não encontrado' });
     }
     const comments = await commentService.listCommentsByArticle(Number(id));
-
+    // Esconder banner pesado no detalhe
     const { banner_image, ...safeArticle } = article as any;
     return res.status(200).json({ ...safeArticle, comments });
   } catch (err) {

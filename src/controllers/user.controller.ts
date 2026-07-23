@@ -16,8 +16,8 @@ export async function createUser(req: Request, res: Response, next: NextFunction
       return res.status(409).json({ message: 'E-mail já cadastrado' });
     }
 
-    const passwordHash = data.password
-      ? await hashPassword(data.password)
+    const passwordHash = password
+      ? await hashPassword(password)
       : '';
 
     const user = await userService.createUser({
